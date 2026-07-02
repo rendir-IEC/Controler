@@ -400,7 +400,7 @@ function Hres(){
 
 function Hpw(){
   const plans=[{id:'ind',title:'INDIVIDUAL',sub:'Acceso completo · 1 usuario',price:'29€',col:'var(--blue)',feat:true,items:['Sesiones diarias ilimitadas','Biblioteca completa: 8 roles × 8 sectores','Progreso histórico y evolución cognitiva','Informe ejecutivo RENDIR tras cada sesión','Preparación HRV integrada'],cta:'Empezar — 29€/mes',btnc:'btn-b'},{id:'pro',title:'PRO',sub:'Todo Individual + evaluación RENDIR',price:'49€',col:'var(--gold)',feat:false,items:['Todo el plan Individual','Evaluación IEC completa RENDIR','Sesión de seguimiento mensual con informe','Integración HRV con wearable opcional','Acceso prioritario a nuevos módulos'],cta:'Empezar — 49€/mes',btnc:'btn-g'},{id:'emp',title:'EMPRESA',sub:'Equipos directivos completos',price:'Consultar',col:'var(--t1)',feat:false,items:['Multi-usuario con panel de empresa','Evaluaciones IEC para el equipo directivo','Informes por función y por empresa','Integración con el sistema RENDIR completo','Formación y acompañamiento incluido'],cta:'Contactar con RENDIR',btnc:'btn-o'}];
-  return `<div class="pg fu" style="padding-bottom:40px"><div style="text-align:center;margin-bottom:32px"><div class="D D2" style="color:var(--blue);margin-bottom:10px">ACCESO COMPLETO</div><div class="B1" style="color:var(--t2);max-width:320px;margin:0 auto;line-height:1.65">Has completado tu prueba gratuita. Selecciona el plan que se ajusta a tu perfil.</div></div><div style="display:flex;flex-direction:column;gap:14px;margin-bottom:26px">${plans.map(p=>`<div class="pc${p.feat?' ft':''}"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">${p.feat?'<div class="pc-pop">MÁS ELEGIDO</div>':''}<div><div class="D D4" style="color:${p.col};letter-spacing:1px">${p.title}</div><div class="C1">${p.sub}</div></div><div style="text-align:right"><div class="D D3" style="color:${p.col}">${p.price}</div>${p.id!=='emp'?`<div class="C2">/mes</div>`:''}</div></div>${p.items.map(f=>`<div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><div style="width:5px;height:5px;border-radius:50%;background:${p.col};flex-shrink:0"></div><span class="B3" style="color:var(--t2)">${f}</span></div>`).join('')}<button class="${p.btnc} btn" style="margin-top:18px" onclick="openStripe(p.id)">${p.cta}</button></div>`).join('')}</div><button id="bh" class="btn btn-o">← Volver</button></div>`;
+  return `<div class="pg fu" style="padding-bottom:40px"><div style="text-align:center;margin-bottom:32px"><div class="D D2" style="color:var(--blue);margin-bottom:10px">ACCESO COMPLETO</div><div class="B1" style="color:var(--t2);max-width:320px;margin:0 auto;line-height:1.65">Has completado tu prueba gratuita. Selecciona el plan que se ajusta a tu perfil.</div></div><div style="display:flex;flex-direction:column;gap:14px;margin-bottom:26px">${plans.map(p=>`<div class="pc${p.feat?' ft':''}"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">${p.feat?'<div class="pc-pop">MÁS ELEGIDO</div>':''}<div><div class="D D4" style="color:${p.col};letter-spacing:1px">${p.title}</div><div class="C1">${p.sub}</div></div><div style="text-align:right"><div class="D D3" style="color:${p.col}">${p.price}</div>${p.id!=='emp'?`<div class="C2">/mes</div>`:''}</div></div>${p.items.map(f=>`<div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><div style="width:5px;height:5px;border-radius:50%;background:${p.col};flex-shrink:0"></div><span class="B3" style="color:var(--t2)">${f}</span></div>`).join('')}<button class="${p.btnc} btn" style="margin-top:18px" onclick="openStripe('${p.id}')">${p.cta}</button></div>`).join('')}</div><button id="bh" class="btn btn-o">← Volver</button></div>`;
 }
 
 function Hpr(){
@@ -415,7 +415,7 @@ function B(){
   const cr=document.getElementById('cta-r');if(cr)cr.addEventListener('click',()=>{S.sc='register';S.rs=0;S.rd={name:'',email:'',password:'',role:'',sector:''};S.fe='';R();});
   const cl=document.getElementById('cta-l');if(cl)cl.addEventListener('click',()=>{S.sc='login';S.ld={email:'',password:'',err:''};R();});
   const dl=document.getElementById('do-l');
-  if(dl)dl.addEventListener('click',()=>{const e=document.getElementById('l-e')?.value.trim(),p=document.getElementById('l-p')?.value;if(!e||!p){S.ld.err='Completa todos los campos';R();return;}const r=A.log(e,p);if(!r.ok){S.ld={email:e,password:p,err:r.msg};R();return;}S.user=r.user;S.ex=getEx(S.user.role,S.user.sector);S.qs=0;S.qd={};S.sc='questionnaire';R();});
+  if(dl)dl.addEventListener('click',()=>{const e=document.getElementById('l-e')?.value.trim(),p=document.getElementById('l-p')?.value;if(!e||!p){S.ld.err='Completa todos los campos';R();return;}const r=A.log(e,p);if(!r.ok){S.ld={email:e,password:p,err:r.msg};R();return;}S.user=r.user;S.ex=getEx(S.user.role,S.user.sector);if(S.user.profile){S.sc='home';S.tab='home';}else{S.qs=0;S.qd={};S.sc='questionnaire';}R();});
   const gr=document.getElementById('go-r');if(gr)gr.addEventListener('click',()=>{S.sc='register';S.rs=0;S.rd={name:'',email:'',password:'',role:'',sector:''};S.fe='';R();});
   const gl=document.getElementById('go-land');if(gl)gl.addEventListener('click',()=>{S.sc='landing';R();});
   document.querySelectorAll('.rgo').forEach(b=>b.addEventListener('click',()=>{S.rd[b.dataset.f]=b.dataset.v;R();}));
@@ -427,6 +427,16 @@ function B(){
     else if(STEP==='rol'){if(!S.rd.role){S.fe='Selecciona tu cargo';R();return;}S.fe='';S.rs=2;R();}
     else{if(!S.rd.sector){S.fe='Selecciona tu sector';R();return;}const r=A.reg(S.rd);if(!r.ok){S.fe=r.msg;R();return;}S.user=r.user;S.ex=getEx(S.user.role,S.user.sector);S.sc='home';S.tab='home';R();}
   });
+  document.querySelectorAll('.qo').forEach(b=>b.addEventListener('click',()=>{S.qd={...S.qd,[b.dataset.q]:b.dataset.v};R();}));
+  const qn=document.getElementById('q-next');
+  if(qn)qn.addEventListener('click',()=>{
+    const ids=['workStyle','teamSize','decisionType','pressure'];const cur=ids[S.qs||0];
+    if(!S.qd||!S.qd[cur])return;
+    if((S.qs||0)>=ids.length-1){S.user.profile={...S.qd};A.set(S.user);A.save(S.user);S.sc='home';S.tab='home';R();}
+    else{S.qs=(S.qs||0)+1;R();}
+  });
+  const qb=document.getElementById('q-back');if(qb)qb.addEventListener('click',()=>{if((S.qs||0)>0){S.qs--;R();}});
+  const qsk=document.getElementById('q-skip');if(qsk)qsk.addEventListener('click',()=>{S.sc='home';S.tab='home';R();});
   document.querySelectorAll('.se').forEach(b=>b.addEventListener('click',()=>{if(!A.can()){S.sc='paywall';R();return;}startEx(parseInt(b.dataset.n));}));
   const gor=document.getElementById('go-res');if(gor)gor.addEventListener('click',()=>{S.sc='results';S.tab='results';R();});
   document.querySelectorAll('#go-pay').forEach(b=>b.addEventListener('click',()=>{S.sc='paywall';R();}));
